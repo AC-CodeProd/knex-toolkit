@@ -8,6 +8,7 @@
     },
     "production": {
       "presets": ["env", "minify"],
+      "ignore": ["**/configuration.js"],
       "plugins": [
         "add-module-exports"
       ]

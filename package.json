@@ -1,7 +1,7 @@
 {
   "name": "knex-toolkit",
   "version": "0.1.0",
-  "description": "",
+  "description": "Helper for Knex utilities migrations/seeding",
   "bin": "./lib/cli.js",
   "main": "./lib/index.js",
   "scripts": {
@@ -30,7 +30,8 @@
     "javascript",
     "knex",
     "toolkit",
-    "migration"
+    "migration",
+    "seed"
   ],
   "author": "Alain CAJUSTE <cajuste.alain@gmail.com>",
   "license": "MIT",

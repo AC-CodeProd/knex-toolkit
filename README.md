@@ -14,7 +14,7 @@ yarn add knex-toolkit
 
 ## Configuration
 
-```json
+```js
 'use strict'
 const { join } = require('path')
 

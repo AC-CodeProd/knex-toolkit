@@ -46,10 +46,9 @@ const secondCommandAuthorized = ['make', 'latest', 'rollback', 'currentVersion',
 
 async function main () {
   const argv = yargs
-  // .version(chalk.blue(process.env.modulePackage.version))
-  .usage(help)
-  .options(options)
-  .argv
+    .usage(help)
+    .options(options)
+    .argv
   const commands = argv._
 
   if (!firstCommandAuthorized.includes(commands[0])) {
@@ -84,7 +83,7 @@ async function main () {
 
   try {
     configuration = require(`${config}`)
-  } catch(err) {
+  } catch (err) {
     yargs.showHelp()
     throw err
   }

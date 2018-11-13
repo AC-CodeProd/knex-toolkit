@@ -4,7 +4,7 @@ const knex = require('knex')
 const fs = require('fs')
 const chalk = require('chalk')
 
-function exit(text) {
+function exit (text) {
   if (text instanceof Error) {
     console.error(chalk.red(text.stack))
   } else {
@@ -13,7 +13,7 @@ function exit(text) {
   process.exit(1)
 }
 
-function success(text) {
+function success (text) {
   console.log(text)
   process.exit(0)
 }
@@ -32,7 +32,6 @@ async function knexToolkit (command, name, config) {
           success(chalk.green(`Created Migration: ${_name}`))
         })
         .catch(exit)
-    break
     case 'migrate:latest':
       console.log('migrate:latest')
       console.log('Run all migrations that have not yet been run.')
@@ -43,13 +42,10 @@ async function knexToolkit (command, name, config) {
           if (log.length === 0) {
             success(chalk.cyan('Already up to date'))
           }
-          success(
-            chalk.green(`Batch ${batchNo} run: ${log.length} migrations \n`) +
-            chalk.cyan(log.join('\n'))
-          )
+          success(chalk.green(`Batch ${batchNo} run: ${log.length} migrations \n`) +
+            chalk.cyan(log.join('\n')))
         })
         .catch(exit)
-    break
     case 'migrate:rollback':
       console.log('migrate:rollback')
       console.log('Rollback the last set of migrations performed.')
@@ -60,14 +56,9 @@ async function knexToolkit (command, name, config) {
           if (log.length === 0) {
             success(chalk.cyan('Already at the base migration'))
           }
-         success(
-            chalk.green(
-              `Batch ${batchNo} rolled back: ${log.length} migrations \n`
-            ) + chalk.cyan(log.join('\n'))
-          )
+          success(chalk.green(`Batch ${batchNo} rolled back: ${log.length} migrations \n`) + chalk.cyan(log.join('\n')))
         })
         .catch(exit)
-    break
     case 'migrate:currentVersion':
       console.log('migrate:currentVersion')
       console.log('View the current version for the migration.')
@@ -78,7 +69,6 @@ async function knexToolkit (command, name, config) {
           success(chalk.green('Current Version: ') + chalk.blue(version))
         })
         .catch(exit)
-    break
     case 'seed:make':
       console.log('seed:make')
       console.log('Create a named seed file.')
@@ -90,7 +80,6 @@ async function knexToolkit (command, name, config) {
           success(chalk.green(`Created seed file: ${_name}`))
         })
         .catch(exit)
-    break
     case 'seed:run':
       console.log('seed:run')
       console.log('Run all seed that have not yet been run.')
@@ -101,17 +90,11 @@ async function knexToolkit (command, name, config) {
           if (log.length === 0) {
             success(chalk.cyan('No seed files exist'))
           }
-          success(
-            chalk.green(
-              `Ran ${log.length} seed files \n${chalk.cyan(log.join('\n'))}`
-            )
-          )
+          success(chalk.green(`Ran ${log.length} seed files \n${chalk.cyan(log.join('\n'))}`))
         })
         .catch(exit)
-    break
     default:
       throw new Error(`Unknown ${command} options, exiting`)
-    break
   }
 }
 

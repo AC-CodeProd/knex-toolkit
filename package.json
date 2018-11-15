@@ -1,6 +1,6 @@
 {
   "name": "knex-toolkit",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Helper for Knex utilities migrations/seeding",
   "bin": "./lib/cli.js",
   "main": "./lib/index.js",
@@ -44,6 +44,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.1",
     "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.3.0",

@@ -10,7 +10,11 @@
       "presets": ["env", "minify"],
       "ignore": ["**/configuration.js"],
       "plugins": [
-        "add-module-exports"
+        "add-module-exports",
+        ["transform-runtime", {
+          "polyfill": false,
+          "regenerator": true
+        }]
       ]
     }
   }

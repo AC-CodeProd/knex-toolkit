@@ -17,7 +17,6 @@ Usage
   Options:
     --database, -d 
     --configuration, -c 
-    --environment, -e Environment'
 
   Examples:
     $ knex-toolkit migrate make create_users # generate migration creating users table
@@ -29,17 +28,48 @@ const options = {
     description: 'Database name',
     required: true
   },
-  'environment': {
-    alias: 'e',
-    description: 'Environment',
-    required: false
-  },
   'configuration': {
     alias: 'c',
     description: 'Configuration of knex',
     required: true
   }
 }
+
+const malformedConfig = `
+Malformed config:
+Examples:
+'use strict'
+const { join } = require('path')
+
+module.exports = {
+  db: {
+    exemple: {
+      client: 'mysql',
+      connection: {
+        host: '',
+        port: 3306,
+        user: '',
+        password: '',
+        database: '',
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
+      },
+      debug: false,
+      pool: {
+        min: 2,
+        max: 10
+      },
+      migrations: {
+        tableName: 'knex_migrations',
+        directory: join(process.cwd(), 'exemple', 'migrations')
+      },
+      seeds: {
+        directory: join(process.cwd(), 'exemple', 'seeds', 'development')
+      }
+    }
+  }
+}
+`
 
 const firstCommandAuthorized = ['migrate', 'seed']
 const secondCommandAuthorized = ['make', 'latest', 'rollback', 'currentVersion', 'run']
@@ -72,11 +102,6 @@ async function main () {
     }
   }
 
-  const environment = argv.e || process.env.NODE_ENV
-  if (!environment) {
-    yargs.showHelp()
-    throw new Error('NODE_ENV not set')
-  }
   const config = argv.c
   const database = argv.d
   let configuration
@@ -88,61 +113,25 @@ async function main () {
     throw err
   }
 
-  if (!Object.keys(configuration).includes(environment)) {
-    throw new Error(`No configuration for environment: '${environment}'`)
+  if (!Object.keys(configuration).includes('db')) {
+    throw new Error(malformedConfig)
   }
 
-  const knexConfig = configuration[environment]
+  const { db } = configuration
 
-  if (!knexConfig.db || !knexConfig.db[database]) {
-    throw new Error(`
-      Malformed config::
-      Examples:
-      'use strict'
-      const { join } = require('path')
-
-      module.exports = {
-        development: {
-          db: {
-            exemple: {
-              client: 'mysql',
-              connection: {
-                host: '',
-                port: 3306,
-                user: '',
-                password: '',
-                database: '',
-                charset: 'utf8mb4',
-                collate: 'utf8mb4_unicode_ci'
-              },
-              debug: false,
-              pool: {
-                min: 2,
-                max: 10
-              },
-              migrations: {
-                tableName: 'knex_migrations',
-                directory: join(process.cwd(), 'exemple', 'migrations')
-              },
-              seeds: {
-                directory: join(process.cwd(), 'exemple', 'seeds', 'development')
-              }
-            }
-          }
-        }
-      }
-    `)
+  if (!db || !db[database]) {
+    throw new Error(malformedConfig)
   }
 
-  if (!knexConfig.db[database].migrations || !knexConfig.db[database].migrations.directory) {
+  if (!db[database].migrations || !db[database].migrations.directory) {
     throw new Error(`No migrations directory in config`)
   }
 
-  if (!knexConfig.db[database].seeds || !knexConfig.db[database].seeds.directory) {
+  if (!db[database].seeds || !db[database].seeds.directory) {
     throw new Error(`No seeds directory in config`)
   }
 
-  knexToolkit(`${commands[0]}:${commands[1]}`, fileName, knexConfig.db[database])
+  knexToolkit(`${commands[0]}:${commands[1]}`, fileName, db[database])
 }
 
 main().then(() => {

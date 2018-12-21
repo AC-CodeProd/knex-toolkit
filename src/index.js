@@ -98,8 +98,8 @@ async function knexToolkit (command, name, config) {
         .catch(exit)
     case 'create:database':
       console.log('create:database')
-      await knex.raw(`CREATE DATABASE ${name}`)
-      await knex.destroy()
+      await db.raw(`CREATE DATABASE ${name}`)
+      await db.destroy()
       break
     default:
       throw new Error(`Unknown ${command} options, exiting`)

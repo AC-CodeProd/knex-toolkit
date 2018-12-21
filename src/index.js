@@ -19,6 +19,9 @@ function success (text) {
 }
 
 async function knexToolkit (command, name, config) {
+  if (command === 'create:database') {
+    config.connection.database = null
+  }
   const db = knex(config)
   switch (command) {
     case 'migrate:make':
@@ -93,6 +96,11 @@ async function knexToolkit (command, name, config) {
           success(chalk.green(`Ran ${log.length} seed files \n${chalk.cyan(log.join('\n'))}`))
         })
         .catch(exit)
+    case 'create:database':
+      console.log('create:database')
+      await knex.raw(`CREATE DATABASE ${name}`)
+      await knex.destroy()
+      break
     default:
       throw new Error(`Unknown ${command} options, exiting`)
   }

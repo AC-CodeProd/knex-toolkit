@@ -13,7 +13,7 @@ Usage
     migrate currentVersion
     seed make
     seed run
-    create database <database_name>
+    create database
 
   Options:
     --database, -d 
@@ -22,7 +22,7 @@ Usage
   Examples:
     $ knex-toolkit migrate make create_users # generate migration creating users table
     $ node node_modules/knex-toolkit/lib/cli.js migrate rollback -d boilerplate -c /var/www/backend/config/docker/index.js
-    $ node node_modules/knex-toolkit/lib/cli.js create database database_name -d boilerplate -c /var/www/backend/config/docker/index.js
+    $ node node_modules/knex-toolkit/lib/cli.js create database -d boilerplate -c /var/www/backend/config/docker/index.js
 `
 
 const options = {
@@ -96,7 +96,7 @@ async function main () {
 
   let fileName = ''
 
-  if (commands[1] === 'make' || (commands[0] === 'create' && commands[1] === 'database')) {
+  if (commands[1] === 'make') {
     if (!commands[2]) {
       yargs.showHelp()
       throw new Error(`Invalid command between a third value please`)

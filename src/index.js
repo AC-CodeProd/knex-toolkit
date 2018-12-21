@@ -20,6 +20,7 @@ function success (text) {
 
 async function knexToolkit (command, name, config) {
   if (command === 'create:database') {
+    name = config.connection.database
     config.connection.database = null
   }
   const db = knex(config)
